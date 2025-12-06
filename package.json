@@ -1,7 +1,7 @@
 {
   "name": "url-shortener",
   "version": "1.0.0",
-  "description": "A production-quality URL shortener service built with Fastify and MongoDB",
+  "description": "A URL shortener service built with Fastify and MongoDB",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -14,7 +14,7 @@
     "mongodb",
     "rest-api"
   ],
-  "author": "",
+  "author": "Alireza Baghiban (itsalrzx)",
   "license": "MIT",
   "dependencies": {
     "fastify": "^4.24.3",
