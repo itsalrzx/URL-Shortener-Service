@@ -4,6 +4,7 @@
  */
 
 const urlService = require('../services/urlService');
+const { NotFoundError } = require('../utils/errors');
 
 class UrlController {
   /**
@@ -22,6 +23,33 @@ class UrlController {
       return reply.status(201).send(result);
       
     } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * GET /:shortId handler
+   * Redirects to the original URL and increments click count
+   * 
+   * @param {Object} request - Fastify request object
+   * @param {Object} reply - Fastify reply object
+   * @returns {Promise<void>} HTTP 302 redirect response
+   */
+  async redirectToUrl(request, reply) {
+    try {
+      const { shortId } = request.params;
+      const originalUrl = await urlService.getOriginalUrl(shortId);
+      
+      return reply.status(302).redirect(originalUrl);
+      
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return reply.status(404).send({
+          statusCode: 404,
+          error: 'Not Found',
+          message: error.message
+        });
+      }
       throw error;
     }
   }
