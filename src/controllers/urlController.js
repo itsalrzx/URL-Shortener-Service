@@ -53,6 +53,33 @@ class UrlController {
       throw error;
     }
   }
+
+  /**
+   * GET /analytics/:shortId handler
+   * Returns analytics data for a shortened URL
+   * 
+   * @param {Object} request - Fastify request object
+   * @param {Object} reply - Fastify reply object
+   * @returns {Promise<Object>} JSON response with analytics data
+   */
+  async getAnalytics(request, reply) {
+    try {
+      const { shortId } = request.params;
+      const analytics = await urlService.getAnalytics(shortId);
+      
+      return reply.status(200).send(analytics);
+      
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return reply.status(404).send({
+          statusCode: 404,
+          error: 'Not Found',
+          message: error.message
+        });
+      }
+      throw error;
+    }
+  }
 }
 
 module.exports = new UrlController();
