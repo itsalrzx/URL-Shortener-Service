@@ -7,7 +7,7 @@ const urlSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function(url) {
-        // Basic URL validation - checks for valid URL format
+        // Basic URL validation
         try {
           new URL(url);
           return true;
@@ -37,13 +37,8 @@ const urlSchema = new mongoose.Schema({
   }
 });
 
-// Create unique index on shortId field for fast lookups
 urlSchema.index({ shortId: 1 }, { unique: true });
-
-// Create index on createdAt field for analytics queries
 urlSchema.index({ createdAt: -1 });
-
-// Add a method to increment click count atomically
 urlSchema.methods.incrementClickCount = function() {
   return this.constructor.findOneAndUpdate(
     { _id: this._id },
@@ -52,7 +47,6 @@ urlSchema.methods.incrementClickCount = function() {
   );
 };
 
-// Static method to find by shortId
 urlSchema.statics.findByShortId = function(shortId) {
   return this.findOne({ shortId });
 };
