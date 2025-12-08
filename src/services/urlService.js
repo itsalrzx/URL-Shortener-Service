@@ -105,7 +105,29 @@ class UrlService {
    * @throws {DatabaseError} If database operation fails
    */
   async getOriginalUrl(shortId) {
-    throw new Error('Method not implemented yet');
+    if (!shortId || typeof shortId !== 'string') {
+      throw new ValidationError('Short ID is required and must be a string');
+    }
+
+    try {
+      const urlDocument = await Url.findOneAndUpdate(
+        { shortId: shortId.trim() },
+        { $inc: { clickCount: 1 } },
+        { new: true }
+      );
+
+      if (!urlDocument) {
+        throw new NotFoundError('Short URL not found');
+      }
+
+      return urlDocument.originalUrl;
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+      
+      throw new DatabaseError('Failed to retrieve URL from database');
+    }
   }
 
   /**
