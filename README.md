@@ -270,6 +270,8 @@ docker run -p 3000:3000 --env-file .env url-shortener
 
 ## API Documentation
 
+### Swagger/OpenAPI Documentation
+
 Once the server is running, you can access the interactive API documentation at:
 
 **http://localhost:3000/documentation**
@@ -279,6 +281,74 @@ The documentation is automatically generated from the route schemas and includes
 - Parameter descriptions
 - Example requests and responses
 - Try-it-out functionality
+
+### Postman Collection
+
+For comprehensive API testing, we provide a complete Postman collection with automated tests and environment setup.
+
+#### Files Included
+
+- `postman_collection.json` - Complete API collection with all endpoints
+- `postman_environment.json` - Environment variables for easy configuration
+
+#### Features
+
+- **All API Endpoints**: POST /shorten, GET /:shortId, GET /analytics/:shortId
+- **Automated Tests**: Response validation, data type checking, and business logic verification
+- **Environment Variables**: Easy configuration for different environments (dev, staging, prod)
+- **Error Testing**: Comprehensive error scenario testing
+- **Data Flow**: Automatic extraction and reuse of generated short IDs between requests
+- **Example Responses**: Sample responses for all endpoints
+
+#### How to Use
+
+1. **Import the Collection**:
+   - Open Postman
+   - Click "Import" → "Upload Files"
+   - Select `postman_collection.json`
+
+2. **Import the Environment** (optional but recommended):
+   - Click "Import" → "Upload Files"
+   - Select `postman_environment.json`
+   - Select the "URL Shortener Environment" from the environment dropdown
+
+3. **Configure Base URL**:
+   - If not using the environment file, update the `baseUrl` variable in the collection
+   - Default: `http://localhost:3000`
+
+4. **Run the Collection**:
+   - **Individual Requests**: Click on any request and hit "Send"
+   - **Full Test Suite**: Click "Run Collection" to execute all requests with automated tests
+   - **Recommended Order**: 
+     1. "Create Short URL" (generates and stores shortId)
+     2. "Redirect to Original URL" (uses stored shortId)
+     3. "Get URL Analytics" (uses stored shortId)
+
+#### Test Automation
+
+The collection includes comprehensive automated tests:
+
+- **Response Validation**: Status codes, response structure, data types
+- **Business Logic**: Short ID format validation, URL format checking
+- **Data Flow**: Automatic extraction of shortId from create response for subsequent requests
+- **Error Handling**: Validation of error responses for invalid inputs
+- **Performance**: Response time validation (< 5 seconds)
+
+#### Environment Configuration
+
+The environment file includes:
+
+```json
+{
+  "baseUrl": "http://localhost:3000",  // API base URL
+  "shortId": ""                        // Auto-populated by tests
+}
+```
+
+For different environments, update the `baseUrl`:
+- **Development**: `http://localhost:3000`
+- **Staging**: `https://staging-api.yourservice.com`
+- **Production**: `https://api.yourservice.com`
 
 ## Project Structure
 
