@@ -18,12 +18,14 @@
   "license": "MIT",
   "dependencies": {
     "fastify": "^4.24.3",
+    "fastify-plugin": "^4.5.1",
     "mongoose": "^8.0.3",
     "nanoid": "^5.0.4",
     "@fastify/swagger": "^8.12.0",
     "@fastify/swagger-ui": "^2.1.0",
     "@fastify/rate-limit": "^9.1.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "pino-pretty": "^10.3.1"
   },
   "engines": {
     "node": ">=18.0.0"
