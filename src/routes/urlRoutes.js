@@ -134,7 +134,10 @@ async function urlRoutes(fastify, options) {
   // POST /shorten - Create shortened URL (with rate limiting)
   fastify.post('/shorten', {
     config: {
-      rateLimit: fastify.rateLimitConfig.shorten
+      rateLimit: fastify.rateLimitConfig?.shorten || {
+        max: 100,
+        timeWindow: 900000
+      }
     },
     schema: {
       description: 'Create a shortened URL from a long URL',

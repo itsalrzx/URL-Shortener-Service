@@ -12,18 +12,24 @@ const config = require('./config/env');
  */
 function createApp() {
   const loggerConfig = {
-    level: config.isDevelopment ? 'info' : 'warn',
-    ...(config.isDevelopment && {
-      transport: {
+    level: config.isDevelopment ? 'info' : 'warn'
+  };
+
+  if (config.isDevelopment) {
+    try {
+      require.resolve('pino-pretty');
+      loggerConfig.transport = {
         target: 'pino-pretty',
         options: {
           colorize: true,
           translateTime: 'HH:MM:ss Z',
           ignore: 'pid,hostname'
         }
-      }
-    })
-  };
+      };
+    } catch (error) {
+      console.log('pino-pretty not available, using default logger');
+    }
+  }
 
   const app = fastify({
     logger: loggerConfig,
