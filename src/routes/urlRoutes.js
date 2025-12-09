@@ -131,8 +131,11 @@ const schemas = {
  */
 async function urlRoutes(fastify, options) {
   
-  // POST /shorten - Create shortened URL
+  // POST /shorten - Create shortened URL (with rate limiting)
   fastify.post('/shorten', {
+    config: {
+      rateLimit: fastify.rateLimitConfig.shorten
+    },
     schema: {
       description: 'Create a shortened URL from a long URL',
       tags: ['URLs'],
